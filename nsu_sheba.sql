@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2024 at 04:56 PM
+-- Generation Time: Nov 07, 2024 at 08:39 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -64,16 +64,8 @@ CREATE TABLE `blood_requests` (
   `bags_needed` int(11) DEFAULT NULL,
   `additional_notes` text DEFAULT NULL,
   `bags_fulfilled` int(11) DEFAULT 0,
-  `status` enum('pending','fulfilled') DEFAULT 'pending',
-  `last_accepted_date` date DEFAULT NULL
+  `status` enum('pending','fulfilled') DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `blood_requests`
---
-
-INSERT INTO `blood_requests` (`request_id`, `requester_student_id`, `patient_name`, `patient_age`, `requested_blood_group`, `address`, `date_of_need`, `bags_needed`, `additional_notes`, `bags_fulfilled`, `status`, `last_accepted_date`) VALUES
-(46, '2212478042', 'Sadman Sameer', 45, 'O+', 'sss', '2024-11-07', 2, '', 1, 'pending', '2024-11-06');
 
 -- --------------------------------------------------------
 
@@ -87,15 +79,9 @@ CREATE TABLE `donors` (
   `donor_blood_group` varchar(255) DEFAULT NULL,
   `age` int(11) DEFAULT NULL,
   `phone_number` varchar(15) DEFAULT NULL,
-  `health_condition` text DEFAULT NULL
+  `health_condition` text DEFAULT NULL,
+  `last_accepted_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `donors`
---
-
-INSERT INTO `donors` (`donor_id`, `student_id`, `donor_blood_group`, `age`, `phone_number`, `health_condition`) VALUES
-(22, '2211255042', 'O+', 25, '0179447902', '');
 
 -- --------------------------------------------------------
 
@@ -218,7 +204,7 @@ ALTER TABLE `agendas`
 -- AUTO_INCREMENT for table `blood_requests`
 --
 ALTER TABLE `blood_requests`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `donors`
