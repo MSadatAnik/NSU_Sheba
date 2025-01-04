@@ -7,9 +7,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Include PHPMailer files
-require '/xampp/htdocs/nsu_sheba/PHPMailer/PHPMailer.php';
-require '/xampp/htdocs/nsu_sheba/PHPMailer/SMTP.php';
-require '/xampp/htdocs/nsu_sheba/PHPMailer/Exception.php';
+require __DIR__ . '/vendor/autoload.php';
 
 // Use the PHPMailer namespace
 use PHPMailer\PHPMailer\PHPMailer;
@@ -23,7 +21,7 @@ if (isset($_POST["register"])) {
     $re_password = $_POST["re_password"];
     $gender = $_POST["gender"];
 
-    // Check if email is valid for NSU domain
+    //Check if email is valid for NSU domain
     if (strpos($email, '@northsouth.edu') === false) {
         echo "<script>alert('Please use your NSU email address.');</script>";
         exit();
@@ -60,29 +58,30 @@ $result = mysqli_query($conn, "INSERT INTO temp_users (student_id, student_name,
                 $mail = new PHPMailer(true); // Enable PHPMailer exceptions
 
               // Configure PHPMailer and send the email with notification details
-try {
-    $mail->isSMTP();
-    $mail->Host = 'smtp.gmail.com';
-    $mail->SMTPAuth = true;
-    $mail->Username = 'hasanemamrabby6@gmail.com';
-    $mail->Password = 'kvky zvwy qkoh ftfq';  // App password
-    $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
+              try {
+                // Server settings
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com';
+                $mail->SMTPAuth = true;
+                $mail->Username = 'hasanemamrabby6@gmail.com'; 
+                $mail->Password = 'kvky zvwy qkoh ftfq'; // Use App password here
+                $mail->SMTPSecure = 'tls';
+                $mail->Port = 587;
 
-    // Recipient and message content
-    $mail->setFrom('hasanemamrabby6@gmail.com', 'NSU Sheba Blood Bank');
-    $mail->addAddress($requester_email);
-    $mail->isHTML(true);
-    $mail->Subject = 'Blood Donation Accepted';
-    $mail->Body = "<p>Dear {$student_name}, </p> <h3>A donor has accepted your blood request.</h3>
-                   <p>Contact them at: <br>Email: $accepter_email<br>Phone: $accepter_phone</p>
-                   <p>With regards,<br>NSU Sheba Team</p>";
+                // Recipients
+                $mail->setFrom('hasanemamrabby6@gmail.com', 'OTP Verification');
+                $mail->addAddress($email);  // Add a recipient
 
-    $mail->send();
-    echo "<p>Request accepted, and the requester has been notified via email.</p>";
-} catch (Exception $e) {
-    echo "<p>Message could not be sent. Mailer Error: {$mail->ErrorInfo}</p>";
-}
+                // Content
+                $mail->isHTML(true);
+                $mail->Subject = "Your verification code";
+                $mail->Body = "<p>Dear $student_name, </p> <h3>Your OTP verification code is $otp</h3><br><br><p>With regards,</p><b>NSU Sheba Team</b>";
+
+                $mail->send();
+                echo "<script>alert('Registration Successful, OTP sent to $email.'); window.location.replace('otp.php');</script>";
+            } catch (Exception $e) {
+                echo "<script>alert('Message could not be sent. Mailer Error: {$mail->ErrorInfo}');</script>";
+            }
 
             } else {
                 echo "<script>alert('There was an error during registration. Please try again later.');</script>";

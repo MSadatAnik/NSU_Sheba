@@ -7,10 +7,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Include PHPMailer files
-require '/xampp/htdocs/nsu_sheba/PHPMailer/PHPMailer.php';
-require '/xampp/htdocs/nsu_sheba/PHPMailer/SMTP.php';
-require '/xampp/htdocs/nsu_sheba/PHPMailer/Exception.php';
-
+require __DIR__ . '/vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 

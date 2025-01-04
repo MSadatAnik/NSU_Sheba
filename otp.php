@@ -197,4 +197,5 @@ if (isset($_POST['verify'])) {
         <p>Didn't receive an OTP? <a href="#">Resend OTP</a></p>
     </div>
 </body>
+
 </html>

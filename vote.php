@@ -206,6 +206,22 @@ if (!$agendas) {
             margin: 40px 0;
         }
 
+        .back-button {
+            display: inline-block;
+            background-color: red; /* Red background */
+            color: white; /* White text */
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            margin: 20px 36%; /* Center the button */
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background-color: darkred; /* Darker red on hover */
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -276,7 +292,9 @@ if (!$agendas) {
                 </form>
             </div>
         <?php endwhile; ?>
+        <a href="dashboard.php" class="back-button">Back to Dashboard</a>
     </div>
+    
 </body>
 </html>
 

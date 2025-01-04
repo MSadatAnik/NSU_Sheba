@@ -12,9 +12,10 @@ if (!isset($_SESSION['student_id'])) {
 $student_id = $_SESSION['student_id'];
 
 // Include PHPMailer files and namespace
-require '/xampp/htdocs/nsu_sheba/PHPMailer/PHPMailer.php';
-require '/xampp/htdocs/nsu_sheba/PHPMailer/SMTP.php';
-require '/xampp/htdocs/nsu_sheba/PHPMailer/Exception.php';
+// Include PHPMailer files
+require __DIR__ . '/vendor/autoload.php';
+
+// Use the PHPMailer namespace
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -330,6 +331,22 @@ $conn->close();
             /* Darker green on hover */
         }
 
+        .back-button {
+            display: inline-block;
+            background-color: red; /* Red background */
+            color: white; /* White text */
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            margin: 20px 36%; /* Center the button */
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background-color: darkred; /* Darker red on hover */
+        }
+
         /* Additional Styles for Responsive Design */
         @media (max-width: 768px) {
             .container {
@@ -429,6 +446,7 @@ $conn->close();
         <?php //displayMatchingRequests($conn); 
         ?>
     </div>
+    <a href="dashboard.php" class="back-button">Back to Dashboard</a>
     </div>
 
 </body>
