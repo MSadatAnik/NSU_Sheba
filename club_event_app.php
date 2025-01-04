@@ -13,12 +13,13 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Check if the user is logged in
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header('Location: login.php'); // Redirect to login page if not logged in
     exit();
 }
 
-// Initialize error message and success message variables
+// Initialize error and success messages
 $error_message = "";
 $success_message = "";
 
@@ -27,55 +28,59 @@ if (isset($_GET['success'])) {
     $success_message = "Application submitted successfully!";
 }
 
-// Handle event application
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['event_id'])) {
-    $event_id = $_POST['event_id'];
+// Handle event application form submission
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $student_id = $_SESSION['student_id']; // Assuming the student ID is stored in the session
+    
+    // Check if this is an "Apply" request
+    if (isset($_POST['event_id'])) {
+        $event_id = $_POST['event_id'];
 
-    // Check if the student has already applied for this event
-    $check_sql = "SELECT * FROM event_application WHERE event_id = ? AND student_id = ?";
-    $check_stmt = $conn->prepare($check_sql);
-    $check_stmt->bind_param("ss", $event_id, $student_id);
-    $check_stmt->execute();
-    $check_result = $check_stmt->get_result();
+        // Check if the student has already applied for this event
+        $check_sql = "SELECT * FROM event_application WHERE event_id = ? AND student_id = ?";
+        $check_stmt = $conn->prepare($check_sql);
+        $check_stmt->bind_param("ss", $event_id, $student_id);
+        $check_stmt->execute();
+        $check_result = $check_stmt->get_result();
 
-    if ($check_result->num_rows > 0) {
-        $error_message = "You have already applied for this event.";
-    } else {
-        // Insert application into the event_application table
-        $apply_sql = "INSERT INTO event_application (event_id, student_id) VALUES (?, ?)";
-        $apply_stmt = $conn->prepare($apply_sql);
-        $apply_stmt->bind_param("ss", $event_id, $student_id);
-
-        if ($apply_stmt->execute()) {
-            // Redirect with a success message
-            header("Location: " . $_SERVER['PHP_SELF'] . "?success=1");
-            exit(); // Always exit after a header redirect
+        if ($check_result->num_rows > 0) {
+            $error_message = "You have already applied for this event.";
         } else {
-            $error_message = "Failed to submit application.";
+            // Insert application into the event_application table
+            $apply_sql = "INSERT INTO event_application (event_id, student_id) VALUES (?, ?)";
+            $apply_stmt = $conn->prepare($apply_sql);
+            $apply_stmt->bind_param("ss", $event_id, $student_id);
+
+            if ($apply_stmt->execute()) {
+                // Redirect with a success message
+                header("Location: " . $_SERVER['PHP_SELF'] . "?success=1");
+                exit();
+            } else {
+                $error_message = "Failed to submit application.";
+            }
         }
     }
-}
+    
+    // Check if this is a "Cancel" request
+    if (isset($_POST['cancel_event_id'])) {
+        $cancel_event_id = $_POST['cancel_event_id'];
 
-// Handle event cancellation
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancel_event_id'])) {
-    $cancel_event_id = $_POST['cancel_event_id'];
+        // Delete the event from the club_events table
+        $delete_event_sql = "DELETE FROM club_events WHERE event_id = ?";
+        $delete_event_stmt = $conn->prepare($delete_event_sql);
+        $delete_event_stmt->bind_param("s", $cancel_event_id);
 
-    // Delete the event from club_events table
-    $delete_event_sql = "DELETE FROM club_events WHERE event_id = ?";
-    $delete_event_stmt = $conn->prepare($delete_event_sql);
-    $delete_event_stmt->bind_param("s", $cancel_event_id);
+        if ($delete_event_stmt->execute()) {
+            // Clear applicants for the canceled event
+            $clear_applicants_sql = "DELETE FROM event_application WHERE event_id = ?";
+            $clear_applicants_stmt = $conn->prepare($clear_applicants_sql);
+            $clear_applicants_stmt->bind_param("s", $cancel_event_id);
+            $clear_applicants_stmt->execute();
 
-    if ($delete_event_stmt->execute()) {
-        // Clear applicants for the canceled event
-        $clear_applicants_sql = "DELETE FROM event_application WHERE event_id = ?";
-        $clear_applicants_stmt = $conn->prepare($clear_applicants_sql);
-        $clear_applicants_stmt->bind_param("s", $cancel_event_id);
-        $clear_applicants_stmt->execute();
-
-        $success_message = "Event canceled successfully!";
-    } else {
-        $error_message = "Failed to cancel the event.";
+            $success_message = "Event canceled successfully!";
+        } else {
+            $error_message = "Failed to cancel the event.";
+        }
     }
 }
 
@@ -87,9 +92,9 @@ $events_sql = "
     FROM club_events ce
     LEFT JOIN event_application ea ON ce.event_id = ea.event_id
     LEFT JOIN club_members cm ON ce.club_name = cm.club_name
-    WHERE cm.id = ? AND ce.event_date >= NOW()  -- Show only events with a date in the future
+    WHERE cm.id = ? AND ce.event_date >= NOW()  -- Show only future events
     GROUP BY ce.event_id
-    ORDER BY ce.event_date ASC, applicant_count DESC";  // Sort by event date first, then by applicant count
+    ORDER BY ce.event_date ASC, applicant_count DESC";
 
 $events_stmt = $conn->prepare($events_sql);
 $student_id = $_SESSION['student_id']; // Assuming student ID is in session
@@ -135,7 +140,7 @@ $events_result = $events_stmt->get_result();
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 150px; /* Fixed height for uniformity */
+            height: 150px;
             transition: transform 0.2s;
         }
 
@@ -184,11 +189,11 @@ $events_result = $events_stmt->get_result();
         .description {
             margin: 10px 0;
             color: #495057;
-            flex-grow: 1; /* Allow the description to take available space */
+            flex-grow: 1;
         }
 
         .button-container {
-            text-align: center; /* Center the button */
+            text-align: center;
         }
 
         .error-message {
@@ -213,29 +218,35 @@ $events_result = $events_stmt->get_result();
         <?php endif; ?>
 
         <?php if ($events_result && $events_result->num_rows > 0): ?>
-            <form method="POST" id="event-form">
-                <?php if ($error_message): ?>
-                    <div class="error-message"><?php echo htmlspecialchars($error_message); ?></div>
-                <?php endif; ?>
-                <?php while ($event = $events_result->fetch_assoc()): ?>
-                    <div class="event-info">
-                        <div>
-                            <strong>Event Name:</strong> <?php echo htmlspecialchars($event['event_name']); ?><br>
-                            <strong>Description:</strong> <span class="description"><?php echo htmlspecialchars($event['description']); ?></span><br>
-                            <strong>Date:</strong> <?php echo htmlspecialchars($event['event_date']); ?><br>
-                            <strong>Number of Applicants:</strong> <span class="applicant-count"><?php echo htmlspecialchars($event['applicant_count']); ?></span>
-                        </div>
-                        <div class="button-container">
+            <?php if ($error_message): ?>
+                <div class="error-message"><?php echo htmlspecialchars($error_message); ?></div>
+            <?php endif; ?>
+            <?php while ($event = $events_result->fetch_assoc()): ?>
+                <div class="event-info">
+                    <div>
+                        <strong>Event Name:</strong> <?php echo htmlspecialchars($event['event_name']); ?><br>
+                        <strong>Description:</strong> <span class="description"><?php echo htmlspecialchars($event['description']); ?></span><br>
+                        <strong>Date:</strong> <?php echo htmlspecialchars($event['event_date']); ?><br>
+                        <strong>Number of Applicants:</strong> <span class="applicant-count"><?php echo htmlspecialchars($event['applicant_count']); ?></span>
+                    </div>
+
+                    <div class="button-container">
+                        <!-- Apply Form -->
+                        <form method="POST" action="">
                             <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($event['event_id']); ?>">
                             <button class="apply-button" type="submit">Apply</button>
-                            <?php if ($event['designation'] === 'president'): // Check if user is a president ?>
+                        </form>
+
+                        <?php if ($event['designation'] === 'president'): ?>
+                            <!-- Cancel Form -->
+                            <form method="POST" action="">
                                 <input type="hidden" name="cancel_event_id" value="<?php echo htmlspecialchars($event['event_id']); ?>">
                                 <button class="cancel-button" type="submit">Cancel Event</button>
-                            <?php endif; ?>
-                        </div>
+                            </form>
+                        <?php endif; ?>
                     </div>
-                <?php endwhile; ?>
-            </form>
+                </div>
+            <?php endwhile; ?>
         <?php else: ?>
             <p>No events available at the moment.</p>
         <?php endif; ?>
@@ -245,9 +256,6 @@ $events_result = $events_stmt->get_result();
         </form>
     </div>
 
-    <?php
-    // Close the database connection
-    $conn->close();
-    ?>
+    <?php $conn->close(); ?>
 </body>
 </html>

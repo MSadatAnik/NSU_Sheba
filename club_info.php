@@ -1,5 +1,5 @@
 <?php
-// Start the session and database connection
+
 session_start();
 $servername = "localhost";
 $username = "root";
@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 }
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header('Location: login.php'); // Redirect to login page if not logged in
+    header('Location: login.php'); 
     exit();
 }
 
@@ -43,7 +43,7 @@ $events_result = null;
 if (!empty($club_name)) {
     $events_sql = "SELECT event_id, event_name, description, event_date
                    FROM club_events
-                   WHERE club_name = ?";
+                   WHERE club_name = ? AND event_date >= CURDATE()";
     $events_stmt = $conn->prepare($events_sql);
     $events_stmt->bind_param("s", $club_name);
     $events_stmt->execute();
@@ -72,7 +72,7 @@ if (!empty($club_name)) {
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            text-align: center; /* Center-align content in the container */
+            text-align: center;
         }
 
         h1 {
@@ -80,27 +80,27 @@ if (!empty($club_name)) {
         }
 
         form {
-            margin-top: 20px; /* Add space above the form */
+            margin-top: 20px; 
         }
 
         select {
-            width: 83%; /* Full width of the parent container */
-            padding: 10px; /* Padding for better spacing */
-            border-radius: 4px; /* Rounded corners */
-            border: 1px solid #ccc; /* Light gray border */
-            background-color: #f9f9f9; /* Light background color */
-            font-size: 16px; /* Font size */
-            appearance: none; /* Remove default arrow */
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>'); /* Custom arrow icon */
-            background-repeat: no-repeat; /* No repeat for the arrow */
-            background-position: right 10px center; /* Position the arrow */
-            background-size: 12px; /* Size of the arrow */
+            width: 83%; 
+            padding: 10px; 
+            border-radius: 4px; 
+            border: 1px solid #ccc; 
+            background-color: #f9f9f9;
+            font-size: 16px; 
+            appearance: none; 
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>'); 
+            background-repeat: no-repeat; 
+            background-position: right 10px center; 
+            background-size: 12px; 
         }
 
         select:focus {
-            border-color: #007BFF; /* Change border color on focus */
-            outline: none; /* Remove outline */
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Shadow effect on focus */
+            border-color: #007BFF; 
+            outline: none; 
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
         }
 
         button.return-button {
@@ -123,13 +123,13 @@ if (!empty($club_name)) {
             padding: 10px;
             border-radius: 5px;
             margin: 10px 0;
-            display: inline-block; /* Make member/event info block inline for centering */
-            text-align: left; /* Align text to the left within the block */
-            width: 80%; /* Set a width to allow centering */
+            display: inline-block; 
+            text-align: left; 
+            width: 80%; 
         }
 
         .event-info {
-            background-color: lightgreen; /* Different background for events */
+            background-color: lightgreen;
         }
 
     </style>
@@ -197,7 +197,7 @@ if (!empty($club_name)) {
     if (isset($events_stmt)) {
         $events_stmt->close();
     }
-    $conn->close(); // Close the database connection
+    $conn->close(); 
     ?>
 </body>
 </html>

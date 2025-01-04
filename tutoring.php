@@ -94,6 +94,13 @@
     <h1>Become a Tutor Today!</h1>
 
     <?php
+    session_start(); // Start the session
+
+    // Check if the user is logged in
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+        header('Location: login.php'); // Redirect to login page
+        exit;
+    }
     // Check if there's a message or error in the query string
     if (isset($_GET['message'])) {
         $message = htmlspecialchars($_GET['message']);

@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $allowed_mimes = ['image/jpeg', 'image/png', 'image/gif'];
-    $max_size = 2 * 1024 * 1024; // 2 MB
+    $max_size = 2 * 1024 * 1024; //2mb
 
     if (!in_array($file['type'], $allowed_mimes) || $file['size'] > $max_size) {
         header('Location: club_app.php?fail=invalid_file_type_or_size');
@@ -185,7 +185,7 @@ $conn->close();
         }
 
         .back-button {
-            background-color: #f44336; /* Red color for Back button */
+            background-color: #f44336; 
             color: #fff;
             border: none;
             padding: 10px 20px;
@@ -196,7 +196,7 @@ $conn->close();
         }
 
         .back-button:hover {
-            background-color: #c62828; /* Darker red on hover */
+            background-color: #c62828; 
         }
     </style>
 </head>

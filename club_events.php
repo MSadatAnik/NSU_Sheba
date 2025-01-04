@@ -14,12 +14,12 @@ if ($conn->connect_error) {
 }
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header('Location: login.php'); // Redirect to login page if not logged in
+    header('Location: login.php'); 
     exit();
 }
 
 // Get the president's ID from the session
-$president_id = $_SESSION['student_id']; // Assuming the president's ID is stored in the session
+$president_id = $_SESSION['student_id']; 
 
 // Fetch the club name associated with the president
 $sql = "SELECT cm.club_name FROM club_members cm WHERE cm.id = ? AND cm.designation = 'president'";
@@ -44,7 +44,7 @@ $error_message = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $event_name = $_POST['event_name'];
     $description = $_POST['description'];
-    $event_date = $_POST['event_date']; // Get the date from form input
+    $event_date = $_POST['event_date']; 
 
     // Validate the event date
     $current_date = date('Y-m-d');
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "INSERT INTO club_events (club_name, event_name, description, event_date) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         
-        if ($stmt) { // Check if the statement was prepared successfully
+        if ($stmt) {
             $stmt->bind_param("ssss", $club_name, $event_name, $description, $event_date);
             
             if ($stmt->execute()) {
@@ -64,9 +64,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $error_message = "Error: " . $stmt->error;
             }
             
-            $stmt->close(); // Close the statement
+            $stmt->close(); 
         } else {
-            $error_message = "Error preparing statement: " . $conn->error; // Handle preparation errors
+            $error_message = "Error preparing statement: " . $conn->error; 
         }
     }
 }
@@ -112,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin: 5px 0 15px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            box-sizing: border-box; /* Ensures padding is included in the total width */
+            box-sizing: border-box; 
         }
 
         button {
@@ -131,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .back-button {
-            background-color: #dc3545; /* Red color */
+            background-color: #dc3545; 
             color: white;
             border: none;
             border-radius: 4px;
@@ -139,16 +139,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             cursor: pointer;
             transition: background-color 0.3s;
             width: 100%;
-            margin-top: 20px; /* Space above the back button */
+            margin-top: 20px; 
         }
 
         .back-button:hover {
-            background-color: #c82333; /* Darker red on hover */
+            background-color: #c82333;
         }
 
         .error-message {
-            color: red; /* Red color for error messages */
-            margin-bottom: 15px; /* Space below the error message */
+            color: red; 
+            margin-bottom: 15px; 
         }
     </style>
 </head>
@@ -176,7 +176,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php
     // Close the connection only if it was successfully established
     if ($conn) {
-        $conn->close(); // Close the database connection
+        $conn->close();
     }
     ?>
 </body>

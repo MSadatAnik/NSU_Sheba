@@ -39,13 +39,13 @@ $clubs_result = $conn->query($clubs_sql);
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            text-align: center; /* Center-align text in the container */
+            text-align: center; 
         }
 
         h1 {
             color: #333;
-            text-align: center; /* Center the header */
-            margin-bottom: 20px; /* Optional: add some space below the header */
+            text-align: center; 
+            margin-bottom: 20px; 
         }
 
         .section {
@@ -53,12 +53,12 @@ $clubs_result = $conn->query($clubs_sql);
         }
 
         .club {
-            margin: 20px auto;     /* Center the club boxes horizontally */
+            margin: 20px auto;     
             padding: 10px;
-            width: 60%;            /* Set the width to 80% of the container */
+            width: 60%;            
             border-radius: 4px;
             background-color: #e8f0fe;
-            text-align: center;/* Center-align text in the club box */
+            text-align: center;
         }
 
         .club h3 {
@@ -74,7 +74,7 @@ $clubs_result = $conn->query($clubs_sql);
             padding: 10px 15px;
             cursor: pointer;
             transition: background-color 0.3s;
-            display: inline-block; /* Ensures the button aligns properly */
+            display: inline-block; 
         }
 
         .join-button:hover {
@@ -91,7 +91,7 @@ $clubs_result = $conn->query($clubs_sql);
             border-radius: 5px;
             text-decoration: none;
             transition: background-color 0.3s;
-            display: inline-block; /* Centers the button */
+            display: inline-block; 
         }
 
         .return-button:hover {

@@ -12,7 +12,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 // Get the president's student_id from session
-$student_id = $_SESSION['student_id']; // Ensure you store student_id in session upon login
+$student_id = $_SESSION['student_id']; 
 
 // Fetch the club name and president's name associated with the president's student_id
 $sql_club = "SELECT cm.club_name, u.student_name FROM club_members cm JOIN users u ON cm.id = u.student_id WHERE cm.id = ? AND cm.designation = 'president'";
@@ -78,12 +78,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fullMessage .= "<p>Best regards,</p>";
         $fullMessage .= "<p>" . htmlspecialchars($president_name) . "<br>Club President</p>";
         $mail->Body = $fullMessage;
-        $mail->isHTML(true); // Set email format to HTML
+        $mail->isHTML(true); 
 
         if (!$mail->send()) {
             $error_message = 'Message could not be sent to ' . htmlspecialchars($email) . '. Mailer Error: ' . $mail->ErrorInfo;
-            $sendSuccess = false; // Set sendSuccess to false if there's an error
-            break; // Exit the loop on the first failure
+            $sendSuccess = false; 
+            break; 
         }
 
         // Clear all recipients for the next iteration

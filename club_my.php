@@ -27,7 +27,7 @@ $sql_members = "SELECT u.student_name, u.email
                 WHERE cm.club_name = ? AND cm.designation != 'president'";
 
 // Query to get club events
-$sql_events = "SELECT event_name, description FROM club_events WHERE club_name = ?";
+$sql_events = "SELECT event_name, description FROM club_events WHERE club_name = ? AND event_date >= CURDATE()";
 
 // Prepare and execute president query
 $stmt_president = $conn->prepare($sql_president);
@@ -64,18 +64,18 @@ $result_events = $stmt_events->get_result();
         }
 
         .container {
-            max-width: 800px; /* Set a maximum width for the container */
-            margin: 0 auto; /* Center the container */
-            padding: 20px; /* Padding for the container */
-            background-color: white; /* Background color for the container */
-            border-radius: 8px; /* Rounded corners */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Shadow for the container */
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background-color: white; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
         }
 
         h1, h2 {
             color: #333;
             margin-bottom: 10px;
-            font-weight: 600; /* Make headings bold */
+            font-weight: 600; 
         }
 
         .president {
@@ -94,25 +94,25 @@ $result_events = $stmt_events->get_result();
 
         .back-button {
             display: inline-block;
-            background-color: #f44336; /* Red background */
-            color: white; /* White text */
+            background-color: #f44336; 
+            color: white;
             padding: 10px 20px;
             text-decoration: none;
             border-radius: 5px;
             text-align: center;
             margin-top: 20px;
-            transition: background-color 0.3s; /* Smooth transition */
+            transition: background-color 0.3s; 
         }
 
         .back-button:hover {
-            background-color: #d32f2f; /* Darker red on hover */
+            background-color: #d32f2f; 
         }
 
         .footer {
-            margin-top: 40px; /* Space above footer */
-            text-align: center; /* Center the footer */
-            font-size: 14px; /* Smaller font for footer */
-            color: #777; /* Light gray color for footer text */
+            margin-top: 40px; 
+            text-align: center; 
+            font-size: 14px; 
+            color: #777; 
         }
     </style>
 </head>
@@ -125,7 +125,7 @@ $result_events = $stmt_events->get_result();
             <?php 
             if ($result_president->num_rows > 0) {
                 $president_row = $result_president->fetch_assoc();
-                echo htmlspecialchars($president_row['student_name']) . " - " . htmlspecialchars($president_row['email']); // Display president's name and email
+                echo htmlspecialchars($president_row['student_name']) . " - " . htmlspecialchars($president_row['email']); 
             } else {
                 echo "No president assigned.";
             }

@@ -200,12 +200,12 @@ $conn->close();
         <div class="options">
             <div class="option">
                 <img src="food.png" alt="Food Vendor">
-                <h3>Food Vendor</h3>
+                <h3><a href="foods.php">Food Marketplace</a></h3>
                 <p>Order food on campus easily</p>
             </div>
             <div class="option">
                 <img src="book.png" alt="Book Vendor">
-                <h3>Book Vendor</h3>
+                <h3><a href="books.php">Book Shop</a></h3>
                 <p>Buy or sell books</p>
             </div>
             <div class="option">
@@ -220,24 +220,31 @@ $conn->close();
             </div>
             <div class="option">
                 <img src="voting.png" alt="Voting">
-                <h3><a href="claim.php">Vote</a></h3>
+                <h3><a href="vote.php">Vote</a></h3>
                 <p>Participate in polls and make your voice heard</p>
             </div>
+
             <div class="option">
                 <img src="blood.png" alt="Student Blood Bank">
-                <h3>Student Blood Bank</h3>
+                <h3><a href="blood_bank.php">Student Blood Bank</a></h3>
                 <p>Donate or request blood from fellow students</p>
             </div>
+            
+            <div class="option">
+                <img src="ride.png" alt="Ride Share">
+                <h3><a href="ride.php">Ride Share</a></h3>
+                <p>Share rides with fellow students</p>
+            </div>  
 
             <?php if ($isTutor): ?>
                 <div class="option">
-                    <img src="tutor.png" alt="Tutor Dashboard">
+                    <img src="tutor_register.png" alt="Tutor Dashboard">
                     <h3><a href="tutor_dashboard.php">Tutor Dashboard</a></h3>
                     <p>View your interests, pending, and accepted requests</p>
                 </div>
             <?php else: ?>
                 <div class="option">
-                    <img src="tutoring.png" alt="Tutoring Page">
+                    <img src="tutor_register.png" alt="Tutoring Page">
                     <h3><a href="tutoring.php">Register as Tutor</a></h3>
                     <p>Become a Tutor</p>
                 </div>

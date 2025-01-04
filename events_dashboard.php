@@ -143,18 +143,21 @@ $conn->close();
                 </a>
             </div>
             <?php endif; ?>
+            <?php if ($user_id == 'admin'): // Show My Club card if the user is a member of a club ?>
+                <div class="card">
+                <a href="admin_club_verification.php">
+                    <h2>Admin Club Verification</h2>
+                    <p>Verify club applications.</p>
+                </a>
+            </div>
+            <?php endif; ?>
             <div class="card">
                 <a href="club_app.php">
                     <h2>Club Application</h2>
                     <p>Submit your club applications.</p>
                 </a>
             </div>
-            <div class="card">
-                <a href="admin_club_verification.php">
-                    <h2>Admin Club Verification</h2>
-                    <p>Verify club applications.</p>
-                </a>
-            </div>
+
             <?php if ($is_president): // Only show this card if the user is a president ?>
             <div class="card">
                 <a href="club_member_approval.php">
@@ -172,6 +175,12 @@ $conn->close();
                 <a href="club_mailer.php">
                     <h2>Send Email</h2>
                     <p>Send Email to members.</p>
+                </a>
+            </div>
+            <div class="card">
+                <a href="club_video_call.php">
+                    <h2>Video Conference</h2>
+                    <p>Start Video Conference with members.</p>
                 </a>
             </div>
             <?php endif; ?>

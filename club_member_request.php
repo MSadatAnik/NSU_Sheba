@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 }
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header('Location: login.php'); // Redirect to login page if not logged in
+    header('Location: login.php'); 
     exit();
 }
 
@@ -23,8 +23,8 @@ $club_name = isset($_GET['club_name']) ? $_GET['club_name'] : '';
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $student_id = $_SESSION['student_id']; // Assuming the user ID is stored in the session
-    $designation = $_POST['designation']; // Get designation from form input
+    $student_id = $_SESSION['student_id']; 
+    $designation = $_POST['designation']; 
 
     // Check if the member already exists in club_members
     $sql = "SELECT * FROM club_members WHERE club_name = ? AND id = ?";
