@@ -63,8 +63,8 @@ $result = mysqli_query($conn, "INSERT INTO temp_users (student_id, student_name,
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
-                $mail->Username = 'hasanemamrabby6@gmail.com'; 
-                $mail->Password = 'kvky zvwy qkoh ftfq'; // Use App password here
+                $mail->Username = ''; 
+                $mail->Password = ''; // Use App password here
                 $mail->SMTPSecure = 'tls';
                 $mail->Port = 587;
 
