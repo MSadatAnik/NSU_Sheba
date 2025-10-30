@@ -69,7 +69,7 @@ $result = mysqli_query($conn, "INSERT INTO temp_users (student_id, student_name,
                 $mail->Port = 587;
 
                 // Recipients
-                $mail->setFrom('hasanemamrabby6@gmail.com', 'OTP Verification');
+                $mail->setFrom('', 'OTP Verification');
                 $mail->addAddress($email);  // Add a recipient
 
                 // Content
