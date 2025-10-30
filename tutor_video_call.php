@@ -32,13 +32,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tutor_email'])) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'hasanemamrabby6@gmail.com'; 
-        $mail->Password = 'kvky zvwy qkoh ftfq'; // Use App password here
+        $mail->Username = ''; 
+        $mail->Password = ''; // Use App password here
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
         // Recipients
-        $mail->setFrom('hasanemamrabby6@gmail.com', 'NSU Sheba');
+        $mail->setFrom('', 'NSU Sheba');
         $mail->addAddress($tutor_email);
 
         // Content
